@@ -12,7 +12,9 @@ const testCases = [
     signerAddress: "bc1pma0z4kklknnuwgyzyzr7t9fx4c0xejalz7edazj7swk5lx7f33uql04uvt",
     messageText: "0x59Bb8F7AbfA44852D272E8eE0d3a202AA5AceABB",
     signature: "HwP0hxFTjMeRTvl/z/tqF7zwUNBjkA8P5vfL/gA5iVrrBBcWcMljX6ZeLrolLgZkxhYiueVCSkVH94novoLS83I=",
-    addressType: "Taproot"
+    addressType: "Taproot",
+    publicKey: "036cbc0cea05462880b7866524b0925bb1f20e54e9527760f1b7fdb3347b98b9d4"  
+    // this is the compressed public key returned by okxwallet after calling window.okxwallet.bitcoin.connect();
   },
   {
     signerAddress: "bc1qk7g9sfga8mx0jgljstg7wq5yfad2y3kk0agghr",
@@ -32,6 +34,11 @@ async function check() {
   let wallet = new BtcWallet()
   testCases.forEach((testCase) => {
     try {
+      if (testCase.addressType == 'Taproot') {
+        const status = message.verify(testCase.publicKey, testCase.messageText, testCase.signature);
+        console.log(testCase.addressType, "Is signature verified: ", status);
+        return;
+      }
       const status = message.verifyWithAddress(testCase.signerAddress, testCase.messageText, testCase.signature);
       console.log(testCase.addressType, "Is signature verified: ", status);
     } catch (e) {
