@@ -1,0 +1,15 @@
+{
+  "name": "verifybitcoinaddress",
+  "version": "1.0.0",
+  "description": "Test node script to verify bitcoin signed messages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@okxweb3/coin-base": "^1.0.10",
+    "@okxweb3/coin-bitcoin": "^1.0.24"
+  }
+}

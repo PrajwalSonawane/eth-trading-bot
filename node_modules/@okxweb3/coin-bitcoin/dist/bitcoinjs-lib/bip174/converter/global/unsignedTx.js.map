@@ -1,0 +1,1 @@
+{"version":3,"file":"unsignedTx.js","sourceRoot":"","sources":["../../../../../src/bitcoinjs-lib/bip174/converter/global/unsignedTx.ts"],"names":[],"mappings":";;;AAKA,iDAA+C;AAE/C,SAAgB,MAAM,CAAC,IAAiB;IACtC,OAAO;QACL,GAAG,EAAE,MAAM,CAAC,IAAI,CAAC,CAAC,wBAAW,CAAC,WAAW,CAAC,CAAC;QAC3C,KAAK,EAAE,IAAI,CAAC,QAAQ,EAAE;KACvB,CAAC;AACJ,CAAC;AALD,wBAKC"}
