@@ -27,9 +27,9 @@ cd eth-trading-bot
 
 ### 3. Create .env file
 
-Create a .env file in the root directory of the project and add the following API keys:
-BINANCE_API_KEY=your-binance-api-key
-BINANCE_API_SECRET=your-binance-api-secret
+Create a .env file in the root directory of the project and add the following API keys:  
+BINANCE_API_KEY=your-binance-api-key  
+BINANCE_API_SECRET=your-binance-api-secret  
 
 You can generate these keys from your Binance account. Make sure the API has access to the necessary permissions (e.g., Spot trading permissions).
 
