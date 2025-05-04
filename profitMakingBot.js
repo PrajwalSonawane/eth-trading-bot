@@ -10,8 +10,8 @@ const client = Binance({
 
 // Config variables
 const INTERVAL = 10 * 1000; // 10 seconds (bot runs every 10 seconds)
-const buyTime = "19:00"; // Time to buy (UTC)
-const sellTime = "19:06"; // Time to sell (UTC)
+const buyTime = "01:35"; // Time to buy (UTC)
+const sellTime = "03:49"; // Time to sell (UTC)
 
 
 let ethToSell = new BigNumber(0); // Track the amount of ETH to sell
@@ -19,6 +19,8 @@ let usdtSpentActual = new BigNumber(0); // Track the actual USDT spent while buy
 let buyPrice = 0; // Store buy price at 01:16 UTC
 
 
+
+// fetchs the current ETH price from Binance API
 async function fetchETHPrice() {
   try {
     const res = await axios.get(
@@ -159,13 +161,13 @@ async function runBot() {
   console.log(`Current UTC time: ${currentTime}`);
 
 
-  // Check if it's time to buy (01:16 UTC)
+  // Check if it's time to buy
   if (currentTime === buyTime && ethToSell.isEqualTo(0)) {
     console.log("Buying ETH with 10 USDT...");
     await executeBuyOrder();
   }
 
-  // Check if it's time to sell (03:46 UTC)
+  // Check if it's time to sell
   if (currentTime === sellTime && ethToSell.isGreaterThan(0)) {
     console.log("Selling ETH...");
     await executeSellOrder();
