@@ -1,6 +1,6 @@
 # Profit Making Trading Bot
 
-This is a simple trading bot that interacts with the Binance API to execute buy and sell orders on the ETH/USDT pair. The bot executes trades at scheduled times and tracks the profit made from those trades.
+This is a simple **Trading Bot** that interacts with the **Binance API** to execute buy and sell orders on the **ETH/USDT** pair. The bot executes trades at scheduled times and tracks the profit made from those trades.
 
 ## Prerequisites
 
@@ -45,13 +45,13 @@ The bot will run and start making trades based on the specified parameters in th
 
 Trade Times: You can adjust the buy and sell times in the code to match your desired schedule.
 
-Amount: You can change the amount of ETH to trade by modifying the ethToSell variable in the script.
+Amount: You can change the amount of ETH to trade by modifying the **global variables** in the script.
 
-Market Pair: The script is set to trade ETH/USDT. You can modify it to trade other pairs if needed.
+Market Pair: The script is set to trade **ETH/USDT**. You can modify it to trade other pairs if needed.
 
 ### Notes
-Ensure you have sufficient funds in your Binance account to execute trades.
+Ensure you have **sufficient funds** in your Binance account to execute trades.
 
 The bot uses market orders, so trades will be executed at the current market price.
 
-Make sure to test the bot in a safe environment with a small amount of funds before using it with a larger amount.
+Make sure to test the bot in a safe environment with a **small amount** of funds before using it with a larger amount.
