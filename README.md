@@ -16,9 +16,10 @@ Follow the steps below to get the bot running on your local machine:
 
 Clone the repository to your local machine using the following command:
 
-```bash
+```
 git clone https://github.com/your-username/eth-trading-bot.git
 cd eth-trading-bot
+```
 
 ### 2. Install dependencies
 
