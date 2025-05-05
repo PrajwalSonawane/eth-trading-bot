@@ -10,15 +10,35 @@ const client = Binance({
 
 // Config variables
 const INTERVAL = 10 * 1000; // 10 seconds (bot runs every 10 seconds)
-const buyTime = "01:35"; // Time to buy (UTC)
-const sellTime = "03:49"; // Time to sell (UTC)
-
+const USDT_TRADE_AMOUNT = 10; // Amount of USDT to trade
+const tradingPairs = [
+  { buyTime: "01:35", sellTime: "03:49" },
+  { buyTime: "07:59", sellTime: "12:22" },
+  { buyTime: "13:59", sellTime: "19:56" }
+];
 
 let ethToSell = new BigNumber(0); // Track the amount of ETH to sell
 let usdtSpentActual = new BigNumber(0); // Track the actual USDT spent while buying ETH
 let buyPrice = 0; // Store buy price at 01:16 UTC
 
+async function sendTelegramMessage(message) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
 
+  const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+  const payload = {
+    chat_id: chatId,
+    text: message,
+    parse_mode: "Markdown",
+  };
+
+  try {
+    await axios.post(url, payload);
+    console.log("Telegram message sent");
+  } catch (err) {
+    console.error("Failed to send Telegram message:", err.message);
+  }
+}
 
 // fetchs the current ETH price from Binance API
 async function fetchETHPrice() {
@@ -70,13 +90,13 @@ async function getBalance(asset = "USDT") {
 async function executeBuyOrder() {
   const usdtBalance = await getBalance("USDT");
 
-  if (usdtBalance.isGreaterThanOrEqualTo(new BigNumber(10))) {
+  if (usdtBalance.isGreaterThanOrEqualTo(new BigNumber(USDT_TRADE_AMOUNT))) {
     try {
       const order = await client.order({
         symbol: "ETHUSDT",
         side: "BUY",
         type: "MARKET",
-        quoteOrderQty: 10, // This will buy 10 USDT worth of ETH
+        quoteOrderQty: USDT_TRADE_AMOUNT, // This will buy USDT_TRADE_AMOUNT USDT worth of ETH
       });
 
       const executedQty = new BigNumber(order.executedQty); // Total ETH bought (but we hve to subtract commission)
@@ -96,11 +116,16 @@ async function executeBuyOrder() {
       usdtSpentActual = new BigNumber(order.cummulativeQuoteQty);
 
       console.log(
-        `Bought ${actualEthReceived.toFixed(8)} ETH (after fees) using ${
+        `Bought ${actualEthReceived.toString()} ETH (after fees) using ${
           order.cummulativeQuoteQty
         } USDT Successfully`
       );
       console.log("Order details:", order);
+
+      // Send summary message to Telegram
+      const message = `🟢 *Trade Summary*\n\n*Buy Executed*\nBought: \`${actualEthReceived.toString()} ETH\`\nSpent: \`${usdtSpentActual.toString(2)} USDT\`\n`;
+
+      await sendTelegramMessage(message);
     } catch (err) {
       console.error("Error executing buy order:", err.message);
     }
@@ -136,14 +161,29 @@ async function executeSellOrder() {
 
       const netReceived = totalReceived.minus(totalCommission);
 
+      const leftoverEth = ethToSell.minus(roundedQty);
+      // Fetch current ETH price to value the unsold portion
+      const ethPrice = await fetchETHPrice();
+      const leftoverValue = leftoverEth.times(ethPrice);
+
+      const totalProfit = netReceived.minus(usdtSpentActual);
+      const totalProfitConsideringLeftoverETH = totalProfit.plus(leftoverValue);
+
       console.log(
-        `Sold ${roundedQty.toFixed(8)} ETH for ${netReceived.toString()} USDT Successfully`
+        `Sold ${roundedQty.toString()} ETH for ${netReceived.toString()} USDT Successfully`
       );
+      console.log(`Leftover ETH: ${leftoverEth.toString()} worth ~${leftoverValue.toString()} USDT`);
       console.log(
-        "Net profit is",
-        netReceived.minus(usdtSpentActual).toString()
+        "Realized Profit/Loss (without leftover ETH):",
+        totalProfit.toString()
       );
+      console.log(`Total Profit/Loss (including leftover ETH): ${totalProfitConsideringLeftoverETH.toString()} USDT`);
       console.log("Order details:", order);
+
+      // Send summary message to Telegram
+      const message = `🔴 *Trade Summary*\n\n*Sell Executed*\nSold: \`${roundedQty.toString()} ETH\`\nReceived: \`${netReceived.toString()} USDT\`\n\n*Leftover ETH*: \`${leftoverEth.toString()}\`\nValue: \`${leftoverValue.toString()} USDT\`\n\n*Realized P/L*: \`${totalProfit.toString()} USDT\`\n*Total P/L (with leftover)*: \`${totalProfitConsideringLeftoverETH.toString()} USDT\``;
+
+      await sendTelegramMessage(message);
 
       // Reset ethToSell and usdtSpentActual to prevent duplicate sell
       ethToSell = new BigNumber(0);
@@ -156,20 +196,36 @@ async function executeSellOrder() {
   }
 }
 
+function findCurrentPairIndex(currentTime) {
+  for (let i = 0; i < tradingPairs.length; i++) {
+    const { buyTime, sellTime } = tradingPairs[i];
+    if (currentTime >= buyTime && currentTime <= sellTime) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 async function runBot() {
   const currentTime = new Date().toISOString().slice(11, 16); // Get current UTC time in HH:MM format
   console.log(`Current UTC time: ${currentTime}`);
 
+  const index = findCurrentPairIndex(currentTime);
+  if (index === -1) {
+    // current time is not within any trading pair's buy/sell time Interval
+    return;
+  }
 
+  const { buyTime, sellTime } = tradingPairs[index];
   // Check if it's time to buy
   if (currentTime === buyTime && ethToSell.isEqualTo(0)) {
-    console.log("Buying ETH with 10 USDT...");
+    console.log(`Executing Buy for interval #${index + 1}`);
     await executeBuyOrder();
   }
 
   // Check if it's time to sell
   if (currentTime === sellTime && ethToSell.isGreaterThan(0)) {
-    console.log("Selling ETH...");
+    console.log(`Executing Sell for interval #${index + 1}`);
     await executeSellOrder();
   }
 }
