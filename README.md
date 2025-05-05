@@ -29,7 +29,7 @@ cd eth-trading-bot
 
 Create a .env file in the root directory of the project and add the following API keys:  
 BINANCE_API_KEY=your-binance-api-key  
-BINANCE_API_SECRET=your-binance-api-secret
+BINANCE_API_SECRET=your-binance-api-secret  
 TELEGRAM_BOT_TOKEN=your-telegram-bot-token  
 TELEGRAM_CHAT_ID=chat-id  
 
