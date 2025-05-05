@@ -123,7 +123,7 @@ async function executeBuyOrder() {
       console.log("Order details:", order);
 
       // Send summary message to Telegram
-      const message = `🟢 *Trade Summary*\n\n*Buy Executed*\nBought: \`${actualEthReceived.toString()} ETH\`\nSpent: \`${usdtSpentActual.toString(2)} USDT\`\n`;
+      const message = `🟢 *Trade Summary*\n\n*Buy Executed*\nBought: \`${actualEthReceived.toString()} ETH\`\nSpent: \`${usdtSpentActual.toString()} USDT\`\n`;
 
       await sendTelegramMessage(message);
     } catch (err) {
