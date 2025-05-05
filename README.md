@@ -45,11 +45,11 @@ The bot will run and start making trades based on the specified parameters in th
 
 Use pm2 for smooth running of bot  
 Commands:  
-Install: npm install pm2 -g  
-Start Bot: pm2 start profitMakingBot.js --name "eth-trading-bot"  
-Console logs: pm2 logs eth-trading-bot  
-Stop the bot: pm2 stop eth-trading-bot  
-Restart the bot after code changes: pm2 restart eth-trading-bot  
+**Install**: npm install pm2 -g  
+**Start Bot:** pm2 start profitMakingBot.js --name "eth-trading-bot"  
+**Show logs:** pm2 logs eth-trading-bot  
+**Stop the bot:** pm2 stop eth-trading-bot  
+**Restart the bot after code changes:** pm2 restart eth-trading-bot  
 
 ### 5. Customization
 
