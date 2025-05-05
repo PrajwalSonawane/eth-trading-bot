@@ -7,6 +7,7 @@ This is a simple **Trading Bot** that interacts with the **Binance API** to exec
 - Node.js (v12 or higher)
 - npm (Node Package Manager)
 - Binance API keys (API Key and Secret)
+- Telegram Bot Token and Chat Id
 
 ## Setup Instructions
 
