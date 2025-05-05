@@ -29,9 +29,11 @@ cd eth-trading-bot
 
 Create a .env file in the root directory of the project and add the following API keys:  
 BINANCE_API_KEY=your-binance-api-key  
-BINANCE_API_SECRET=your-binance-api-secret  
+BINANCE_API_SECRET=your-binance-api-secret
+TELEGRAM_BOT_TOKEN=your-telegram-bot-token
+TELEGRAM_CHAT_ID=chat-id
 
-You can generate these keys from your Binance account. Make sure the API has access to the necessary permissions (e.g., Spot trading permissions).
+You can generate these keys from your Binance account and telegram. Make sure the API has access to the necessary permissions (e.g., Spot trading permissions).
 
 ### 4. Running the Bot
 
@@ -40,6 +42,14 @@ Once the dependencies are installed and the .env file is configured, you can sta
 ```node profitMakingBot.js```
 
 The bot will run and start making trades based on the specified parameters in the script.
+
+Use pm2 for smooth running of bot
+Commands:
+Install: npm install pm2 -g
+Start Bot: pm2 start profitMakingBot.js --name "eth-trading-bot"
+Console logs: pm2 logs eth-trading-bot
+Stop the bot: pm2 stop eth-trading-bot
+Restart the bot after code changes: pm2 restart eth-trading-bot
 
 ### 5. Customization
 
