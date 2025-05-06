@@ -1,12 +1,13 @@
 # Profit Making Trading Bot
 
-This is a simple **Trading Bot** that interacts with the **Binance API** to execute buy and sell orders on the **ETH/USDT** pair. The bot executes trades at scheduled times and tracks the profit made from those trades.
+This is a simple **Trading Bot** that interacts with the **Binance API** to execute buy and sell orders on the **ETH/USDT** pair. The bot executes trades at scheduled times and tracks the profit made from those trades. Profit/Loss Summary is notified through telegram.
 
 ## Prerequisites
 
 - Node.js (v12 or higher)
 - npm (Node Package Manager)
 - Binance API keys (API Key and Secret)
+- Telegram Bot Token and Chat Id
 
 ## Setup Instructions
 
