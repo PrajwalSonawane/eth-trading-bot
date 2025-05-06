@@ -19,7 +19,7 @@ const tradingPairs = [
 
 let ethToSell = new BigNumber(0); // Track the amount of ETH to sell
 let usdtSpentActual = new BigNumber(0); // Track the actual USDT spent while buying ETH
-let buyPrice = 0; // Store buy price at 01:16 UTC
+let buyPrice = 0; // Store buy price at buy Time
 
 async function sendTelegramMessage(message) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
